@@ -36,10 +36,18 @@ class FileHeaderCreatorCommand(sublime_plugin.TextCommand):
         self.view.insert(edit, 0, header)
 
     def _h(self, name):
+        author = self.view.settings().get("author")
+        if author is None:
+            author = "Anonymous"
+
+        company = self.view.settings().get("company")
+        if company is None:
+            company = "Anonymous"
+
         string = "/*\n"
         string += " * " + name + "\n"
-        string += " * Created By: " + self.view.settings().get("author") + "\n"
-        string += " * " + self.view.settings().get("company") + "\n"
+        string += " * Created By: " + author + "\n"
+        string += " * " + company + "\n"
         string += " * Created Time: " + datetime.date.today().isoformat() + "\n"
         string += " */\n"
         string += "#ifndef _" + name.replace('.', '_').upper() + "\n"
@@ -48,18 +56,29 @@ class FileHeaderCreatorCommand(sublime_plugin.TextCommand):
         return string
     
     def _python(self, name):
+        author = self.view.settings().get("author")
+        if author is None:
+            author = "Anonymous"
         string = "#!/usr/bin/env python3\n"
         string += "# coding=utf-8\n"
         string += "# Created Time: " + datetime.date.today().isoformat() + "\n\n"
-        string += "__author__ = " + "\'" + self.view.settings().get("author") + "\'"
+        string += "__author__ = " + "\'" + author + "\'"
         
         return string
 
     def _cpp(self, name):
+        author = self.view.settings().get("author")
+        if author is None:
+            author = "Anonymous"
+
+        company = self.view.settings().get("company")
+        if company is None:
+            company = "Anonymous"
+            
         string = "/*\n"
         string += " * " + name + "\n"
-        string += " * Created By: " + self.view.settings().get("author") + "\n"
-        string += " * " + self.view.settings().get("company") + "\n"
+        string += " * Created By: " + author + "\n"
+        string += " * " + company + "\n"
         string += " * Created Time: " + datetime.date.today().isoformat() + "\n"
         string += " */\n"
         return string
